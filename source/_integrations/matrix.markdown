@@ -36,7 +36,7 @@ matrix:
   username: "@my_matrix_user:matrix.org"
   password: supersecurepassword
   rooms:
-    - "#hasstest:matrix.org"
+    - "!Internal_room_ID:matrix.org"
   commands:
     - word: my_command
       name: my_command
@@ -61,7 +61,7 @@ verify_ssl:
   type: string
   default: true
 rooms:
-  description: "The list of rooms that the bot should join and listen for commands (see below) in. While you can limit the list of rooms that a certain command applies to on a per-command basis (see below), you must still list all rooms here that commands should be received in. Rooms can be given either by their internal ID (e.g., '!cURbafjkfsMDVwdRDQ:matrix.org') or any of their aliases (e.g., '#matrix:matrix.org')."
+  description: "The list of rooms that the bot should join and listen for commands (see below) in. While you can limit the list of rooms that a certain command applies to on a per-command basis (see below), you must still list all rooms here that commands should be received in. Rooms should be entered using their internal ID (e.g., '!cURbafjkfsMDVwdRDQ:matrix.org') not their aliases (e.g., '#matrix:matrix.org'). The internal room ID can be found by opening the room settings, followed by the Advanced page."
   required: false
   type: [string]
   default: empty
@@ -113,20 +113,20 @@ matrix:
   username: "@my_matrix_user:matrix.org"
   password: supersecurepassword
   rooms:
-    - "#hasstest:matrix.org"
-    - "#someothertest:matrix.org"
+    - "!Internal_room_ID:matrix.org"
+    - "!Other_Internal_room_ID:matrix.org"
   commands:
     - word: testword
       name: testword
       rooms:
-        - "#someothertest:matrix.org"
+        - "!Other_Internal_room_ID:matrix.org"
     - expression: "My name is (?P<name>.*)"
       name: introduction
 
 notify:
   - name: matrix_notify
     platform: matrix
-    default_room: "#hasstest:matrix.org"
+    default_room: "!Internal_room_ID:matrix.org"
 
 automation:
   - alias: "React to !testword"
@@ -156,8 +156,8 @@ automation:
 
 This configuration will:
 
-- Listen for "!testword" in the room "#someothertest:matrix.org" (and *only*) there. If such a message is encountered, it will answer with "It looks like you wrote !testword" into the "#hasstest:matrix.org" channel.
-- Listen in both rooms for any message matching "My name is <any string>" and answer with "Hello <the string>" into "#hasstest:matrix.org".
+- Listen for "!testword" in the room "!Other_Internal_room_ID:matrix.org" (and *only*) there. If such a message is encountered, it will answer with "It looks like you wrote !testword" into the "!Internal_room_ID:matrix.org" channel.
+- Listen in both rooms for any message matching "My name is <any string>" and answer with "Hello <the string>" into "!Internal_room_ID:matrix.org".
 
 ## Notifications
 
